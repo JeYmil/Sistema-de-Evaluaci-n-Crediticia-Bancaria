@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Dashboard - Evaluación Crediticia</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid">
+                <span class="navbar-brand">Sistema Crediticio</span>
+            <span class="text-white user-label">Usuario</span>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-primary text-start" th:href="@{/dashboard}">Dashboard</a>
+                        <a class="btn btn-dark text-start" th:href="@{/clientes}">Clientes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/solicitudes}">Solicitudes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-dark text-start" th:href="@{/politicas}">Políticas</a>
+                        <a class="btn btn-dark text-start" th:href="@{/usuarios}">Personal del banco</a>
+                        <a class="btn btn-dark text-start" th:href="@{/reportes}">Reportes</a>
+                        <a class="btn btn-danger text-start mt-4" th:href="@{/logout}">Cerrar sesión</a>
+                    </div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+                        <div>
+                            <p class="section-eyebrow mb-1">Panel operativo</p>
+                            <h2 class="mb-1">Dashboard</h2>
+                            <p class="text-muted mb-0">Resumen de clientes y solicitudes guardados en PostgreSQL.</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-info" role="status">Resumen conectado al modelo MVC y a PostgreSQL mediante Spring Data JPA.</div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Clientes</h6>
+                                    <h2 th:text="${clientesTotal}">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Solicitudes</h6>
+                                    <h2 th:text="${solicitudesTotal}">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Aprobadas</h6>
+                                    <h2 th:text="${aprobadasTotal}">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Pendientes / en proceso</h6>
+                                    <h2 th:text="${pendientesTotal}">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Solicitudes registradas</h5>
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{/solicitudes}">Ver todas</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="tabla-dashboard-solicitudes">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Cliente</th>
+                                            <th>Monto</th>
+                                            <th>Estado</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="solicitud : ${solicitudes}">
+                                            <td th:text="${solicitud.codigo}">
+                                            </td>
+                                            <td th:text="${solicitud.cliente.nombre}">
+                                            </td>
+                                            <td th:text="${'S/ ' + solicitud.monto}">
+                                            </td>
+                                            <td th:text="${solicitud.estado}">
+                                            </td>
+                                            <td th:text="${solicitud.fecha}">
+                                            </td>
+                                            <td><a th:href="@{/solicitudes/detalle(id=${solicitud.idSolicitud})}">Ver</a></td>
+                                        </tr>
+                                        <tr th:if="${#lists.isEmpty(solicitudes)}">
+                                            <td colspan="6" class="text-center text-muted">Todavía no hay solicitudes.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+        </script>
+    </body>
+</html>

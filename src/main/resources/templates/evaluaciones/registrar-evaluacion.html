@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/><title>Registrar evaluación</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid"><a class="navbar-brand" th:href="@{/dashboard}">Sistema Crediticio</a><span class="text-white">Evaluación de solicitudes</span></div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-dark text-start" th:href="@{/dashboard}">Dashboard</a>
+                        <a class="btn btn-dark text-start" th:href="@{/clientes}">Clientes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/solicitudes}">Solicitudes</a>
+                        <a class="btn btn-primary text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-dark text-start" th:href="@{/politicas}">Políticas</a>
+                        <a class="btn btn-dark text-start" th:href="@{/usuarios}">Personal del banco</a>
+                        <a class="btn btn-dark text-start" th:href="@{/reportes}">Reportes</a></div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 th:text="${evaluacion.idEvaluacion == null ? 'Nueva evaluación' : 'Editar evaluación'}">Nueva evaluación</h2>
+                            <p class="text-muted mb-0">Vincula el análisis con una solicitud registrada.</p>
+                        </div>
+                        <a class="btn btn-outline-secondary" th:href="@{/evaluaciones}">Volver</a></div>
+                    <div class="alert alert-warning" th:if="${#lists.isEmpty(solicitudes)}"><strong>No hay solicitudes disponibles para evaluar.</strong> Registra primero una solicitud vinculada a un cliente. <a th:href="@{/solicitudes/registrar}" class="alert-link">Crear solicitud</a></div>
+                    <form class="card shadow-sm" th:object="${evaluacion}" th:action="@{/evaluaciones/guardar}" method="post">
+                        <div class="card-header bg-white py-3"><strong>Datos de evaluación</strong></div>
+                        <div class="card-body">
+                            <input type="hidden" th:field="*{idEvaluacion}"/>
+                            <input type="hidden" th:field="*{codigo}"/>
+                            <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-12"><label class="form-label" for="idSolicitud">Solicitud</label>
+                                    <select id="idSolicitud" class="form-select" th:field="*{idSolicitud}" required>
+                                        <option value="">Seleccione una solicitud</option>
+                                        <option th:each="solicitud : ${solicitudes}" th:value="${solicitud.idSolicitud}" th:text="${solicitud.etiquetaParaEvaluacion}">
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('idSolicitud')}" th:errors="*{idSolicitud}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="puntaje">Puntaje (0–850)</label>
+                                    <input id="puntaje" class="form-control" type="number" min="0" max="850" th:field="*{puntaje}"/>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('puntaje')}" th:errors="*{puntaje}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="nivelRiesgo">Nivel de riesgo</label>
+                                    <select id="nivelRiesgo" class="form-select" th:field="*{nivelRiesgo}">
+                                        <option value="">Seleccione</option>
+                                        <option value="Por evaluar">Por evaluar</option>
+                                        <option value="Bajo">Bajo</option>
+                                        <option value="Medio">Medio</option>
+                                        <option value="Alto">Alto</option>
+                                    </select>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('nivelRiesgo')}" th:errors="*{nivelRiesgo}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="resultado">Resultado</label>
+                                    <select id="resultado" class="form-select" th:field="*{resultado}">
+                                        <option value="">Seleccione</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Aprobado">Aprobado</option>
+                                        <option value="Rechazado">Rechazado</option>
+                                        <option value="Revisión manual">Revisión manual</option>
+                                    </select>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('resultado')}" th:errors="*{resultado}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="politica">Política aplicada</label>
+                                    <input id="politica" class="form-control" th:field="*{politica}" maxlength="100" placeholder="Ej. Política personal v1"/>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('politica')}" th:errors="*{politica}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="dti">Relación deuda/ingreso (DTI %)</label>
+                                    <input id="dti" class="form-control" type="number" min="0" max="100" step="0.01" th:field="*{dti}"/>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('dti')}" th:errors="*{dti}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="ingresoDisponible">Ingreso disponible (S/)</label>
+                                    <input id="ingresoDisponible" class="form-control" type="number" min="0" step="0.01" th:field="*{ingresoDisponible}"/>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('ingresoDisponible')}" th:errors="*{ingresoDisponible}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="capacidadNuevaCuota">Capacidad de nueva cuota (S/)</label>
+                                    <input id="capacidadNuevaCuota" class="form-control" type="number" min="0" step="0.01" th:field="*{capacidadNuevaCuota}"/>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('capacidadNuevaCuota')}" th:errors="*{capacidadNuevaCuota}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><label class="form-label" for="montoMaximoEstimado">Monto máximo estimado (S/)</label>
+                                    <input id="montoMaximoEstimado" class="form-control" type="number" min="0" step="0.01" th:field="*{montoMaximoEstimado}"/>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('montoMaximoEstimado')}" th:errors="*{montoMaximoEstimado}">
+                                    </div>
+                                </div>
+                                <div class="col-12"><label class="form-label" for="comentario">Comentario / sustento</label>
+                                    <textarea id="comentario" class="form-control" rows="3" th:field="*{comentario}" maxlength="1000" placeholder="Resume los factores considerados">
+                                    </textarea>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('comentario')}" th:errors="*{comentario}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white d-flex gap-2">
+                            <button class="btn btn-primary" type="submit" th:disabled="${#lists.isEmpty(solicitudes)}">Guardar evaluación</button>
+                            <a class="btn btn-outline-secondary" th:href="@{/evaluaciones}">Cancelar</a></div>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

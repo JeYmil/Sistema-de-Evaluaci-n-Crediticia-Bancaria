@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/><title>Personal del banco</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid"><a class="navbar-brand" th:href="@{/dashboard}">Sistema Crediticio</a><span class="text-white">Administración</span></div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-dark text-start" th:href="@{/dashboard}">Dashboard</a>
+                        <a class="btn btn-dark text-start" th:href="@{/clientes}">Clientes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/solicitudes}">Solicitudes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-dark text-start" th:href="@{/politicas}">Políticas</a>
+                        <a class="btn btn-primary text-start" th:href="@{/usuarios}">Personal del banco</a>
+                        <a class="btn btn-dark text-start" th:href="@{/reportes}">Reportes</a></div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2>Personal del banco</h2>
+                            <p class="text-muted mb-0">Correos institucionales, cargos y roles registrados.</p>
+                        </div>
+                        <a class="btn btn-primary" th:href="@{/usuarios/nuevo}">+ Nuevo usuario</a></div>
+                    <div class="alert alert-info">Este módulo registra perfiles internos. El inicio de sesión y la protección de roles se integrarán en la etapa de seguridad.</div>
+                    <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}">
+                    </div>
+                    <div class="alert alert-danger" th:if="${error}" th:text="${error}">
+                    </div>
+                    <div class="card shadow-sm">
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Correo institucional</th>
+                                        <th>Cargo</th>
+                                        <th>Rol</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="usuario : ${usuarios}">
+                                        <td th:text="${usuario.nombreCompleto ?: '—'}">
+                                        </td>
+                                        <td th:text="${usuario.correo}">
+                                        </td>
+                                        <td th:text="${usuario.cargo ?: '—'}">
+                                        </td>
+                                        <td><span class="badge text-bg-primary" th:text="${usuario.rol}"></span></td>
+                                        <td th:text="${usuario.estado}">
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a class="btn btn-sm btn-outline-secondary" th:href="@{/usuarios/editar/{id}(id=${usuario.idUsuario})}">Editar</a>
+                                                <form method="post" th:action="@{/usuarios/eliminar/{id}(id=${usuario.idUsuario})}" onsubmit="return confirm('¿Eliminar este usuario?')">
+                                                    <button class="btn btn-sm btn-outline-danger">Eliminar</button></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(usuarios)}">
+                                        <td colspan="6" class="text-center text-muted py-5">Aún no se han registrado usuarios del banco.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

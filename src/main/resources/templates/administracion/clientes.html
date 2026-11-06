@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/><title>Clientes - Sistema Crediticio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid"><a class="navbar-brand" th:href="@{/dashboard}">Sistema Crediticio</a><span class="text-white">Administración</span></div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-dark text-start" th:href="@{/dashboard}">Dashboard</a>
+                        <a class="btn btn-primary text-start" th:href="@{/clientes}">Clientes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/solicitudes}">Solicitudes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-dark text-start" th:href="@{/politicas}">Políticas</a>
+                        <a class="btn btn-dark text-start" th:href="@{/usuarios}">Personal del banco</a>
+                        <a class="btn btn-dark text-start" th:href="@{/reportes}">Reportes</a></div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2>Clientes</h2>
+                            <p class="text-muted mb-0">Registros en PostgreSQL: <strong th:text="${#lists.size(clientes)}">0</strong></p>
+                        </div>
+                        <a class="btn btn-primary" th:href="@{/clientes/registrar}">+ Nuevo cliente</a></div>
+                    <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}">
+                    </div>
+                    <div class="alert alert-danger" th:if="${error}" th:text="${error}">
+                    </div>
+                    <div class="card shadow-sm">
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>DNI</th>
+                                        <th>Teléfono</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="cliente : ${clientes}">
+                                        <td th:text="${cliente.codigo}">
+                                        </td>
+                                        <td th:text="${cliente.nombre}">
+                                        </td>
+                                        <td th:text="${cliente.dni}">
+                                        </td>
+                                        <td th:text="${cliente.telefono}">
+                                        </td>
+                                        <td th:text="${cliente.estado}">
+                                        </td>
+                                        <td class="d-flex gap-2">
+                                            <a class="btn btn-sm btn-outline-primary" th:href="@{/clientes/perfil(id=${cliente.idCliente})}">Ver</a>
+                                            <a class="btn btn-sm btn-outline-secondary" th:href="@{/clientes/editar/{id}(id=${cliente.idCliente})}">Editar</a>
+                                            <form method="post" th:action="@{/clientes/eliminar/{id}(id=${cliente.idCliente})}" onsubmit="return confirm('¿Eliminar este cliente?')">
+                                                <button class="btn btn-sm btn-outline-danger">Eliminar</button></form>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(clientes)}">
+                                        <td colspan="6" class="text-center text-muted py-4">Aún no hay clientes. Usa “Nuevo cliente” para registrar uno.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

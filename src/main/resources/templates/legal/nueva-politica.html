@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Nueva política - Sistema Crediticio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/dashboard}">Sistema Crediticio</a>
+        <span class="text-white">Administración</span>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-dark text-start" th:href="@{/dashboard}">Dashboard</a>
+                        <a class="btn btn-dark text-start" th:href="@{/clientes}">Clientes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/solicitudes}">Solicitudes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-primary text-start" th:href="@{/politicas}">Políticas</a>
+                        <a class="btn btn-dark text-start" th:href="@{/usuarios}">Personal del banco</a>
+                        <a class="btn btn-dark text-start" th:href="@{/reportes}">Reportes</a>
+                    </div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <p class="section-eyebrow mb-1">Administración</p>
+                    <h2 th:text="${politica.id == null ? 'Nueva política' : 'Editar política'}">Nueva política</h2>
+                    <p class="text-muted">Registra una política y consérvala en la base de datos.</p>
+                    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+                    <div class="alert alert-info">La política se guarda en PostgreSQL mediante Spring Data JPA.</div>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <form th:action="@{/politicas/guardar}" method="post" th:object="${politica}">
+                                <input type="hidden" name="id" th:value="${politica.id}"/>
+                                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="producto">Producto crediticio</label>
+                                    <select class="form-select" id="producto" name="producto" required>
+                                        <option value="">Seleccione un producto</option>
+                                        <option value="Crédito personal" th:selected="${politica.producto == 'Crédito personal'}">Crédito personal</option>
+                                        <option value="Crédito vehicular" th:selected="${politica.producto == 'Crédito vehicular'}">Crédito vehicular</option>
+                                        <option value="Crédito hipotecario" th:selected="${politica.producto == 'Crédito hipotecario'}">Crédito hipotecario</option>
+                                        <option value="Crédito para emprendimiento" th:selected="${politica.producto == 'Crédito para emprendimiento'}">Crédito para emprendimiento</option>
+                                        <option value="Crédito educativo" th:selected="${politica.producto == 'Crédito educativo'}">Crédito educativo</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="version">Versión</label>
+                                        <input class="form-control" id="version" name="version" th:value="${politica.version}" placeholder="1.0" required maxlength="12"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="vigencia">Vigencia</label>
+                                        <input class="form-control" id="vigencia" name="vigencia" th:value="${politica.vigencia}" placeholder="01/10/2026" required maxlength="30"/>
+                                    </div>
+                                </div>
+                                <div class="mb-3"><label class="form-label" for="estado">Estado de la política</label><select class="form-select" id="estado" name="estado"><option value="Activa" th:selected="${politica.estado == 'Activa'}">Activa (se aplica a solicitudes nuevas)</option><option value="Borrador" th:selected="${politica.estado == 'Borrador' or politica.estado == null}">Borrador</option><option value="Inactiva" th:selected="${politica.estado == 'Inactiva'}">Inactiva</option></select></div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="descripcion">Descripción de las reglas</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required maxlength="400" placeholder="Ejemplo: DTI máximo de 40 % y score mínimo de 620 puntos." th:text="${politica.descripcion}">
+                                    </textarea>
+                                </div>
+                                <h5>Umbrales para la decisión automática</h5>
+                                <p class="text-muted">Los casos que queden entre estos límites pasan a revisión manual.</p>
+                                <div class="row">
+                                    <div class="col-md-3 mb-3"><label class="form-label" for="puntajeMinimoAprobar">Puntaje mínimo para aprobar</label><input class="form-control" id="puntajeMinimoAprobar" name="puntajeMinimoAprobar" type="number" min="300" max="850" th:value="${politica.puntajeMinimoAprobar ?: 650}" required/></div>
+                                    <div class="col-md-3 mb-3"><label class="form-label" for="puntajeMaximoRechazo">Puntaje de rechazo hasta</label><input class="form-control" id="puntajeMaximoRechazo" name="puntajeMaximoRechazo" type="number" min="0" max="849" th:value="${politica.puntajeMaximoRechazo ?: 499}" required/></div>
+                                    <div class="col-md-3 mb-3"><label class="form-label" for="dtiMaximoAprobacion">DTI máximo para aprobar (%)</label><input class="form-control" id="dtiMaximoAprobacion" name="dtiMaximoAprobacion" type="number" min="1" max="100" step="0.1" th:value="${politica.dtiMaximoAprobacion ?: 35}" required/></div>
+                                    <div class="col-md-3 mb-3"><label class="form-label" for="dtiMinimoRechazo">DTI desde el que se rechaza (%)</label><input class="form-control" id="dtiMinimoRechazo" name="dtiMinimoRechazo" type="number" min="1" max="100" step="0.1" th:value="${politica.dtiMinimoRechazo ?: 50}" required/></div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Guardar política</button>
+                                <a class="btn btn-secondary" th:href="@{/politicas}">Cancelar</a>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

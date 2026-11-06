@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Reportes - Sistema Crediticio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid"><a class="navbar-brand" th:href="@{/dashboard}">Sistema Crediticio</a><span class="text-white">Reportes del sistema</span></div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-dark text-start" th:href="@{/dashboard}">Dashboard</a>
+                        <a class="btn btn-dark text-start" th:href="@{/clientes}">Clientes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/solicitudes}">Solicitudes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-dark text-start" th:href="@{/politicas}">Políticas</a>
+                        <a class="btn btn-dark text-start" th:href="@{/usuarios}">Personal del banco</a>
+                        <a class="btn btn-primary text-start" th:href="@{/reportes}">Reportes</a>
+                        <a class="btn btn-danger text-start mt-4" th:href="@{/logout}">Cerrar sesión</a>
+                    </div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                        <div>
+                            <p class="text-uppercase small text-muted mb-1">Análisis de cartera</p>
+                            <h2 class="mb-1">Reportes</h2>
+                            <p class="text-muted mb-0">Resumen calculado desde las solicitudes guardadas en PostgreSQL.</p>
+                        </div>
+                        <a class="btn btn-outline-primary" th:href="@{/solicitudes/registrar}">+ Nueva solicitud</a></div>
+                    <div class="alert alert-danger" th:if="${error}" th:text="${error}">
+                    </div>
+                    <section class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Periodo del reporte</h5>
+                            <form method="get" th:action="@{/reportes}" class="row g-3 align-items-end">
+                                <div class="col-sm-5 col-lg-4"><label class="form-label" for="fechaInicio">Desde</label>
+                                    <input class="form-control" id="fechaInicio" name="fechaInicio" type="date" th:value="${fechaInicio}"/>
+                                </div>
+                                <div class="col-sm-5 col-lg-4"><label class="form-label" for="fechaFin">Hasta</label>
+                                    <input class="form-control" id="fechaFin" name="fechaFin" type="date" th:value="${fechaFin}"/>
+                                </div>
+                                <div class="col-sm-6 col-lg-4"><label class="form-label" for="persona">Cliente (nombre o DNI)</label><input class="form-control" id="persona" name="persona" th:value="${persona}" placeholder="Nombre o DNI"/></div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-primary w-100" type="submit">Generar</button></div>
+                                <div class="col-12"><small class="text-muted">Deja ambas fechas vacías para consultar todos los registros.</small></div>
+                            </form>
+                        </div>
+                    </section>
+                    <section class="row g-3 mb-4">
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="text-muted">Solicitudes incluidas</div>
+                                    <div class="display-6" th:text="${resumen.total}">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="text-muted">Aprobadas</div>
+                                    <div class="display-6 text-success" th:text="${resumen.aprobadas}">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="text-muted">Rechazadas</div>
+                                    <div class="display-6 text-danger" th:text="${resumen.rechazadas}">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="text-muted">Pendientes / en revisión</div>
+                                    <div class="display-6 text-warning" th:text="${resumen.pendientes}">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap justify-content-between gap-2">
+                                <div>
+                                    <h5 class="card-title">Resumen de resultados</h5>
+                                    <p class="text-muted mb-0">Tasas sobre las solicitudes incluidas en el periodo.</p>
+                                </div>
+                                <div class="text-end"><span class="text-muted">Monto solicitado acumulado</span>
+                                    <div class="fs-4 fw-semibold" th:text="|S/ ${#numbers.formatDecimal(resumen.montoSolicitado, 1, 2)}|">S/ 0.00</div>
+                                </div>
+                            </div>
+                            <div class="row g-4 mt-2">
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between"><span>Aprobación</span><strong th:text="|${resumen.tasaAprobacion}%|">0%</strong></div>
+                                    <div class="progress" role="progressbar" aria-label="Tasa de aprobación" th:aria-valuenow="${resumen.tasaAprobacion}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar bg-success" th:style="|width:${resumen.tasaAprobacion}%|">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between"><span>Rechazo</span><strong th:text="|${resumen.tasaRechazo}%|">0%</strong></div>
+                                    <div class="progress" role="progressbar" aria-label="Tasa de rechazo" th:aria-valuenow="${resumen.tasaRechazo}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar bg-danger" th:style="|width:${resumen.tasaRechazo}%|">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                                <div>
+                                    <h5 class="card-title mb-1">Resumen mensual</h5>
+                                    <p class="text-muted mb-0">Conteo agrupado por el mes de registro.</p>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a class="btn btn-outline-primary" th:href="@{/reportes/detalles(fechaInicio=${fechaInicio},fechaFin=${fechaFin},persona=${persona})}">Ver detalles del periodo</a>
+                                    <a class="btn btn-success" th:href="@{/reportes/descargar(fechaInicio=${fechaInicio},fechaFin=${fechaFin},persona=${persona})}">Descargar Excel</a></div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Mes</th>
+                                            <th>Total</th>
+                                            <th>Aprobadas</th>
+                                            <th>Rechazadas</th>
+                                            <th>Pendientes / revisión</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="mes : ${resumen.resumenMensual}">
+                                            <td th:text="${mes.mes}">10/2026</td>
+                                            <td th:text="${mes.total}">0</td>
+                                            <td th:text="${mes.aprobadas}">0</td>
+                                            <td th:text="${mes.rechazadas}">0</td>
+                                            <td th:text="${mes.pendientes}">0</td>
+                                        </tr>
+                                        <tr th:if="${#lists.isEmpty(resumen.resumenMensual)}">
+                                            <td colspan="5" class="text-center text-muted py-4">No hay solicitudes para mostrar en este periodo.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

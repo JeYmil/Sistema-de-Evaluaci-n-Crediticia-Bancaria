@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/><title>Oferta crediticia - Sistema Crediticio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid"><a class="navbar-brand" th:href="@{/dashboard}">Sistema Crediticio</a><span class="text-white">Módulo en preparación</span></div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-primary text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-danger text-start mt-4" th:href="@{/logout}">Cerrar sesión</a></div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <p class="section-eyebrow mb-1">Siguiente etapa</p>
+                    <h1>Oferta crediticia</h1>
+                    <div class="alert alert-info mt-4"><strong>Este módulo está pendiente de integración con PostgreSQL.</strong> En esta versión todavía no existe una entidad de oferta ni una operación de aceptación o rechazo persistida. Para evitar mostrar datos ficticios como si fueran reales, las condiciones aparecerán cuando se implemente ese flujo.</div>
+                    <p class="text-muted">La evaluación crediticia disponible puede consultarse desde el listado de evaluaciones.</p>
+                    <a class="btn btn-primary" th:href="@{/evaluaciones}">Ir a evaluaciones</a></main>
+            </div>
+        </div>
+    </body>
+</html>

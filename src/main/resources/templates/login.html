@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/><title>Inicio de sesión - Sistema Crediticio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body class="bg-light">
+        <main class="container">
+            <div class="row justify-content-center align-items-center vh-100">
+                <div class="col-11 col-sm-8 col-md-5 col-lg-4">
+                    <div class="card shadow">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4"><img alt="Logo del Sistema Crediticio" class="mb-3" height="72" th:src="@{/img/logo-crediticio.svg}" width="72"/>
+                                <h2>Sistema Bancario</h2>
+                                <p class="text-muted">Evaluación Crediticia</p>
+                            </div>
+                            <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+                            <form class="needs-validation" th:action="@{/login}" method="post">
+                                <div class="mb-3"><label class="form-label" for="usuario">Correo del banco o DNI del cliente</label>
+                                    <input autocomplete="username" class="form-control" id="usuario" name="usuario" placeholder="ana@banco.com o 12345678" required/>
+                                    <div class="invalid-feedback" id="usuario-feedback">Usa un correo @banco.com o un DNI de 8 dígitos.</div>
+                                </div>
+                                <div class="mb-3"><label class="form-label" for="password">Contraseña</label>
+                                    <input autocomplete="current-password" class="form-control" id="password" minlength="6" name="password" placeholder="Ingrese su contraseña" required type="password"/>
+                                    <div class="invalid-feedback">Ingresa al menos 6 caracteres.</div>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary" type="submit">Continuar</button></div>
+                            </form>
+                            <p class="text-center mt-3 mb-0"><a th:href="@{/registro-cliente}">Crear cuenta de cliente</a></p>
+                        </div>
+                    </div>
+                    <p class="text-center text-muted mt-3">Sistema de Evaluación Crediticia Bancaria</p>
+                </div>
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+        </script>
+    </body>
+</html>

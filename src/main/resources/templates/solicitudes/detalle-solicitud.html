@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/><title>Detalle de solicitud</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid"><a class="navbar-brand" th:href="@{/dashboard}">Sistema Crediticio</a><span class="text-white">Panel de trabajador</span></div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3 col-lg-2 bg-dark min-vh-100 p-3">
+                    <h5 class="text-white mb-4">Menú</h5>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-dark text-start" th:href="@{/dashboard}">Dashboard</a>
+                        <a class="btn btn-dark text-start" th:href="@{/clientes}">Clientes</a>
+                        <a class="btn btn-primary text-start" th:href="@{/solicitudes}">Solicitudes</a>
+                        <a class="btn btn-dark text-start" th:href="@{/evaluaciones}">Evaluaciones</a>
+                        <a class="btn btn-dark text-start" th:href="@{/politicas}">Políticas</a>
+                        <a class="btn btn-dark text-start" th:href="@{/usuarios}">Personal del banco</a>
+                        <a class="btn btn-dark text-start" th:href="@{/reportes}">Reportes</a></div>
+                </aside>
+                <main class="col-md-9 col-lg-10 p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div><small class="text-muted" th:text="${solicitud.codigo ?: 'Solicitud'}">SOL-001</small>
+                            <h2 class="mb-0">Detalle de solicitud</h2>
+                        </div>
+                        <a class="btn btn-outline-secondary" th:href="@{/solicitudes}">Volver</a></div>
+                    <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}">
+                    </div>
+                    <div class="alert alert-danger" th:if="${error}" th:text="${error}">
+                    </div>
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h5>Información del cliente</h5>
+                            <div class="row g-3">
+                                <div class="col-md-4"><strong>Nombre</strong>
+                                    <div th:text="${solicitud.cliente != null ? solicitud.cliente.nombre : 'Cliente sin vincular'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><strong>DNI</strong>
+                                    <div th:text="${solicitud.cliente != null ? solicitud.cliente.dni : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><strong>Teléfono</strong>
+                                    <div th:text="${solicitud.cliente != null ? solicitud.cliente.telefono : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6"><strong>Correo</strong>
+                                    <div th:text="${solicitud.cliente != null ? solicitud.cliente.correo : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6"><strong>Dirección</strong>
+                                    <div th:text="${solicitud.cliente != null ? solicitud.cliente.direccion : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-12" th:if="${solicitud.cliente != null}">
+                                    <a class="btn btn-sm btn-outline-primary" th:href="@{/clientes/perfil(id=${solicitud.cliente.idCliente})}">Ver perfil del cliente</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h5>Información del crédito</h5>
+                            <div class="row g-3">
+                                <div class="col-md-3"><strong>Tipo</strong>
+                                    <div th:text="${solicitud.tipoCredito ?: '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3"><strong>Monto</strong>
+                                    <div th:text="${solicitud.monto != null ? 'S/ ' + solicitud.monto : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3"><strong>Plazo</strong>
+                                    <div th:text="${solicitud.plazoMeses != null ? solicitud.plazoMeses + ' meses' : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3"><strong>Fecha</strong>
+                                    <div th:text="${solicitud.fecha ?: '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3"><strong>Estado</strong>
+                                    <div><span class="badge text-bg-secondary" th:text="${solicitud.estado ?: 'Pendiente'}"></span></div>
+                                </div>
+                                <div class="col-md-9"><strong>Motivo</strong>
+                                    <div th:text="${solicitud.motivo ?: '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-12"><strong>Observaciones</strong>
+                                    <div th:text="${solicitud.observaciones ?: 'Sin observaciones'}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h5>Información financiera mensual</h5>
+                            <div class="row g-3">
+                                <div class="col-md-4"><strong>Ingresos</strong>
+                                    <div th:text="${solicitud.ingresosMensuales != null ? 'S/ ' + solicitud.ingresosMensuales : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><strong>Gastos</strong>
+                                    <div th:text="${solicitud.gastosMensuales != null ? 'S/ ' + solicitud.gastosMensuales : '—'}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4"><strong>Deudas actuales</strong>
+                                    <div th:text="${solicitud.deudasMensuales != null ? 'S/ ' + solicitud.deudasMensuales : '—'}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm mb-4"><div class="card-body">
+                        <h5>Resultado automático</h5>
+                        <p><strong>Estado:</strong> <span th:text="${solicitud.estado}">Revisión manual</span></p>
+                        <p class="mb-2"><strong>Motivo:</strong> <span th:text="${evaluacion != null ? evaluacion.comentario : 'Sin evaluación asociada'}">Motivo</span></p>
+                        <a class="btn btn-outline-primary" th:if="${solicitud.estado == 'Revisión manual' and evaluacion != null}" th:href="@{/evaluaciones/detalle(id=${evaluacion.idEvaluacion})}">Abrir evaluación manual</a>
+                    </div></div>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>
