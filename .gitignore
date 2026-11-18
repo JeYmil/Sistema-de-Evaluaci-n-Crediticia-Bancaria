@@ -1,0 +1,12 @@
+# Archivos generados por Maven y herramientas de compilación
+/target/
+/build/
+/dist/
+
+# Archivos privados o temporales de IDE
+/nbproject/private/
+/.idea/
+*.iml
+
+# Registros de ejecución
+*.log

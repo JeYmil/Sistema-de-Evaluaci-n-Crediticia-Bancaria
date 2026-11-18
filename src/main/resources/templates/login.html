@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Acceso - Sistema de Evaluación Crediticia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body class="login-page">
+    <main class="login-layout container-fluid">
+        <div class="login-brand-panel">
+            <div class="login-brand-content">
+                <div class="login-brand-logo">
+                    <img alt="Sistema de Evaluación Crediticia" height="52" th:src="@{/img/logo-crediticio.svg}" width="52"/>
+                    <span>Evaluación<br/>Crediticia</span>
+                </div>
+                <p class="login-eyebrow">PORTAL DE ATENCIÓN</p>
+                <h1>Una gestión clara para cada solicitud.</h1>
+                <p class="login-intro">Ingresa al portal para consultar tu información o gestionar las solicitudes de crédito.</p>
+                <div class="login-steps" aria-label="Etapas de atención">
+                    <div class="login-step"><span>01</span><div><strong>Registra</strong><small>Completa la información de la solicitud.</small></div></div>
+                    <div class="login-step"><span>02</span><div><strong>Evalúa</strong><small>El banco revisa los datos y documentos.</small></div></div>
+                    <div class="login-step"><span>03</span><div><strong>Consulta</strong><small>Revisa el estado y el resultado.</small></div></div>
+                </div>
+                <div class="login-brand-footer">Atención para clientes y personal del banco</div>
+            </div>
+            <div class="login-orbit login-orbit-one"></div>
+            <div class="login-orbit login-orbit-two"></div>
+        </div>
+
+        <section class="login-access-area" aria-labelledby="login-title">
+            <div class="login-card card">
+                <div class="card-body">
+                    <div class="login-card-heading">
+                        <span class="login-card-icon" aria-hidden="true">✓</span>
+                        <p class="section-eyebrow mb-2">Acceso al sistema</p>
+                        <h2 id="login-title">Bienvenido</h2>
+                        <p class="text-muted mb-0">Ingresa con tus datos registrados.</p>
+                    </div>
+                    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+                    <form class="needs-validation" th:action="@{/login}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label" for="usuario">Correo del banco o DNI del cliente</label>
+                            <input autocomplete="username" class="form-control" id="usuario" name="usuario" placeholder="ana@banco.com o 12345678" required/>
+                            <div class="invalid-feedback" id="usuario-feedback">Usa tu correo del banco o tu DNI registrado.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="password">Contraseña</label>
+                            <input autocomplete="current-password" class="form-control" id="password" minlength="6" name="password" placeholder="Ingresa tu contraseña" required type="password"/>
+                            <div class="invalid-feedback">Ingresa al menos 6 caracteres.</div>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit">Ingresar al portal</button>
+                        </div>
+                    </form>
+                    <div class="login-registration">
+                        <span class="login-registration-mark" aria-hidden="true">+</span>
+                        <div>
+                            <strong>¿Eres cliente nuevo?</strong>
+                            <p>Registra tus datos para crear tu acceso personal.</p>
+                            <a th:href="@{/registro-cliente}">Crear cuenta de cliente <span aria-hidden="true">→</span></a>
+                        </div>
+                    </div>
+                    <p class="login-access-note">El personal del banco ingresa con su correo institucional.</p>
+                </div>
+            </div>
+            <p class="login-copyright">Sistema de Evaluación Crediticia Bancaria</p>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
