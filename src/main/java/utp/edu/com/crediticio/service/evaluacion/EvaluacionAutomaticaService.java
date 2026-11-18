@@ -27,7 +27,7 @@ public class EvaluacionAutomaticaService {
 
     @Transactional
     public Evaluacion evaluarNuevaSolicitud(Solicitud solicitud) {
-        Politica politica = politicaRepository.findFirstByProductoIgnoreCaseAndEstadoIgnoreCase(
+        Politica politica = politicaRepository.findFirstByProductoIgnoreCaseAndEstadoIgnoreCaseOrderByIdDesc(
                 nombreProducto(solicitud.getTipoCredito()), "Activa").orElse(null);
         int minimoAprobar = politica == null || politica.getPuntajeMinimoAprobar() == null ? 650 : politica.getPuntajeMinimoAprobar();
         int maximoRechazo = politica == null || politica.getPuntajeMaximoRechazo() == null ? 499 : politica.getPuntajeMaximoRechazo();

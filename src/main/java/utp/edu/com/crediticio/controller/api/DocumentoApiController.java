@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import utp.edu.com.crediticio.model.solicitud.DocumentoSolicitud;
+import utp.edu.com.crediticio.exception.api.RecursoNoEncontradoException;
 import utp.edu.com.crediticio.service.solicitud.DocumentoSolicitudService;
 
 @RestController
@@ -30,3 +31,4 @@ public class DocumentoApiController {
                 .body(new ByteArrayResource(documento.getContenido()));
     }
 }
+

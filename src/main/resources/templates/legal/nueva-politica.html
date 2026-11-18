@@ -33,7 +33,7 @@
                     <h2 th:text="${politica.id == null ? 'Nueva política' : 'Editar política'}">Nueva política</h2>
                     <p class="text-muted">Registra una política y consérvala en la base de datos.</p>
                     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
-                    <div class="alert alert-info">La política se guarda en PostgreSQL mediante Spring Data JPA.</div>
+                                    <div class="alert alert-info">Al activar una política, se usará en las nuevas solicitudes de su producto. Si hay más de una activa para el mismo producto, se aplicará la última registrada.</div>
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <form th:action="@{/politicas/guardar}" method="post" th:object="${politica}">

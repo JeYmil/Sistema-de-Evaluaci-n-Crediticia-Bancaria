@@ -27,11 +27,19 @@
                 <main class="col-md-9 col-lg-10 p-4">
                     <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
                         <div>
-                            <p class="text-uppercase small text-muted mb-1">PostgreSQL</p>
+                            <p class="text-uppercase small text-muted mb-1">Detalle</p>
                             <h2 class="mb-1">Solicitudes del reporte</h2>
                             <p class="text-muted mb-0">Registros encontrados: <strong th:text="${#lists.size(solicitudes)}">0</strong></p>
                         </div>
-                        <a class="btn btn-outline-secondary" th:href="@{/reportes(fechaInicio=${fechaInicio},fechaFin=${fechaFin})}">Volver al resumen</a></div>
+                        <div class="d-flex gap-2">
+                            <form method="get" th:action="@{/reportes/descargar}">
+                                <input type="hidden" name="fechaInicio" th:value="${fechaInicio}"/>
+                                <input type="hidden" name="fechaFin" th:value="${fechaFin}"/>
+                                <input type="hidden" name="persona" th:value="${persona}"/>
+                                <button class="btn btn-success" type="submit">Descargar Excel filtrado</button>
+                            </form>
+                            <a class="btn btn-outline-secondary" th:href="@{/reportes(fechaInicio=${fechaInicio},fechaFin=${fechaFin},persona=${persona})}">Volver al resumen</a>
+                        </div></div>
                     <div class="alert alert-danger" th:if="${error}" th:text="${error}">
                     </div>
                     <form method="get" th:action="@{/reportes/detalles}" class="card card-body shadow-sm mb-4">
@@ -71,7 +79,7 @@
                                         <td th:text="${solicitud.tipoCredito ?: '—'}">Personal</td>
                                         <td th:text="${solicitud.monto != null ? 'S/ ' + #numbers.formatDecimal(solicitud.monto, 1, 2) : '—'}">S/ 0.00</td>
                                         <td th:text="${solicitud.fecha ?: '—'}">2026-10-01</td>
-                                        <td><span class="badge text-bg-secondary" th:text="${solicitud.estado ?: 'Pendiente'}">Pendiente</span></td>
+                                        <td><span class="badge text-bg-secondary" th:text="${solicitud.estado ?: 'Revisión manual'}">Revisión manual</span></td>
                                         <td th:text="${solicitud.ingresosMensuales != null ? 'S/ ' + solicitud.ingresosMensuales + ' / S/ ' + solicitud.deudasMensuales : 'Sin datos financieros'}"></td>
                                         <td th:text="${solicitud.motivo ?: '—'}"></td>
                                         <td th:text="${evaluacion != null ? evaluacion.resultado + ' · ' + evaluacion.comentario : (solicitud.observaciones ?: 'Sin evaluación registrada')}"></td>

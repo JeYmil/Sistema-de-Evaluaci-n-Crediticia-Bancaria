@@ -7,21 +7,29 @@
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body class="bg-light">
-<main class="container py-5" style="max-width:620px">
+<main class="container py-5" style="max-width:920px">
     <div class="card shadow-sm"><div class="card-body p-4">
         <h1 class="h3">Crear cuenta de cliente</h1>
-        <p class="text-muted">Registra los datos que usarás para ingresar al portal y hacer seguimiento a tus solicitudes.</p>
+        <p class="text-muted">Completa el mismo perfil personal y financiero que solicita el banco. Así el sistema puede evaluar tus solicitudes con datos completos.</p>
+        <div class="alert alert-light border py-2">El código y el estado activo se asignan al crear la cuenta. La antigüedad laboral se guarda como referencia del perfil, pero no determina por sí sola el resultado.</div>
         <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
         <form th:action="@{/registro-cliente}" th:object="${registro}" method="post">
-            <label class="form-label" for="nombre">Nombre completo</label><input id="nombre" class="form-control mb-2" th:field="*{nombre}" required/>
-            <div class="text-danger small" th:errors="*{nombre}"></div>
-            <label class="form-label" for="dni">DNI</label><input id="dni" class="form-control mb-2" th:field="*{dni}" inputmode="numeric" maxlength="8" required/>
-            <div class="text-danger small" th:errors="*{dni}"></div>
-            <label class="form-label" for="correo">Correo</label><input id="correo" class="form-control mb-2" type="email" th:field="*{correo}" required/>
-            <div class="text-danger small" th:errors="*{correo}"></div>
-            <label class="form-label" for="clave">Contraseña (mínimo 8 caracteres)</label><input id="clave" class="form-control mb-3" type="password" th:field="*{clave}" minlength="8" required/>
-            <div class="text-danger small" th:errors="*{clave}"></div>
-            <button class="btn btn-primary">Crear cuenta</button> <a class="btn btn-outline-secondary" th:href="@{/login}">Volver al acceso</a>
+            <div class="row g-3">
+                <div class="col-md-6"><label class="form-label" for="nombre">Nombre completo</label><input id="nombre" class="form-control" th:field="*{nombre}" minlength="2" maxlength="120" required/><div class="text-danger small" th:errors="*{nombre}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="dni">DNI</label><input id="dni" class="form-control" th:field="*{dni}" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" required/><div class="text-danger small" th:errors="*{dni}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="fechaNacimiento">Fecha de nacimiento</label><input id="fechaNacimiento" class="form-control" type="date" th:field="*{fechaNacimiento}" required/><div class="text-danger small" th:errors="*{fechaNacimiento}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="telefono">Teléfono</label><input id="telefono" class="form-control" th:field="*{telefono}" inputmode="numeric" maxlength="9" pattern="[0-9]{9}" placeholder="9 dígitos" required/><div class="text-danger small" th:errors="*{telefono}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="correo">Correo electrónico</label><input id="correo" class="form-control" type="email" th:field="*{correo}" maxlength="150" required/><div class="text-danger small" th:errors="*{correo}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="direccion">Dirección</label><input id="direccion" class="form-control" th:field="*{direccion}" maxlength="180" required/><div class="text-danger small" th:errors="*{direccion}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="empresa">Empresa o actividad</label><input id="empresa" class="form-control" th:field="*{empresa}" maxlength="120" required/><div class="text-danger small" th:errors="*{empresa}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="cargo">Cargo u ocupación</label><input id="cargo" class="form-control" th:field="*{cargo}" maxlength="100" required/><div class="text-danger small" th:errors="*{cargo}"></div></div>
+                <div class="col-md-6"><label class="form-label" for="antiguedadMeses">Antigüedad laboral (meses)</label><input id="antiguedadMeses" class="form-control" type="number" min="0" th:field="*{antiguedadMeses}" required/><div class="form-text">Dato del perfil laboral; no cambia por sí solo la decisión automática.</div><div class="text-danger small" th:errors="*{antiguedadMeses}"></div></div>
+                <div class="col-md-4"><label class="form-label" for="ingresosMensuales">Ingresos mensuales (S/)</label><input id="ingresosMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{ingresosMensuales}" required/><div class="text-danger small" th:errors="*{ingresosMensuales}"></div></div>
+                <div class="col-md-4"><label class="form-label" for="gastosMensuales">Gastos mensuales (S/)</label><input id="gastosMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{gastosMensuales}" required/><div class="text-danger small" th:errors="*{gastosMensuales}"></div></div>
+                <div class="col-md-4"><label class="form-label" for="deudasMensuales">Deudas mensuales (S/)</label><input id="deudasMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{deudasMensuales}" required/><div class="form-text">Ingresa 0 si no tienes deudas.</div><div class="text-danger small" th:errors="*{deudasMensuales}"></div></div>
+            </div>
+            <div class="mt-3"><label class="form-label" for="clave">Contraseña (mínimo 8 caracteres)</label><input id="clave" class="form-control mb-1" type="password" th:field="*{clave}" minlength="8" required/><div class="text-danger small" th:errors="*{clave}"></div></div>
+            <div class="mt-4"><button class="btn btn-primary">Crear cuenta</button> <a class="btn btn-outline-secondary" th:href="@{/login}">Volver al acceso</a></div>
         </form>
     </div></div>
 </main></body></html>

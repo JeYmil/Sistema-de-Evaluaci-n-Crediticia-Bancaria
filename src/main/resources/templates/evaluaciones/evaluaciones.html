@@ -80,11 +80,11 @@
                                         </td>
                                         <td th:text="${evaluacion.solicitud != null ? evaluacion.solicitud.codigo : '—'}">
                                         </td>
-                                        <td th:text="${evaluacion.puntaje != null ? evaluacion.puntaje + ' / 850' : 'Pendiente'}">
+                                        <td th:text="${evaluacion.puntaje != null ? evaluacion.puntaje + ' / 850' : 'Sin puntaje'}">
                                         </td>
                                         <td th:text="${evaluacion.nivelRiesgo ?: 'Por evaluar'}">
                                         </td>
-                                        <td><span class="badge text-bg-secondary" th:text="${evaluacion.resultado ?: 'Pendiente'}"></span></td>
+                                        <td><span class="badge text-bg-secondary" th:text="${evaluacion.resultado ?: 'Revisión manual'}"></span></td>
                                         <td>
                                             <a class="btn btn-sm btn-outline-primary" th:href="@{/evaluaciones/detalle(id=${evaluacion.idEvaluacion})}">Ver</a>
                                         </td>

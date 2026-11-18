@@ -20,6 +20,7 @@ public class ClienteService {
     public Cliente buscarPorDni(String dni) { return clienteRepository.findFirstByDni(dni).orElse(null); }
 
     public Cliente guardar(Cliente cliente) {
+        if (cliente.getEstado() == null || cliente.getEstado().isBlank()) cliente.setEstado("Activo");
         Cliente clienteConDni = buscarPorDni(cliente.getDni());
         if (clienteConDni != null && !clienteConDni.getIdCliente().equals(cliente.getIdCliente())) {
             throw new IllegalArgumentException("Ya existe un cliente con ese DNI.");

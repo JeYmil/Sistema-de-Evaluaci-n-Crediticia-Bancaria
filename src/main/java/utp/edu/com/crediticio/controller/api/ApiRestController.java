@@ -8,7 +8,9 @@ import utp.edu.com.crediticio.model.cliente.Cliente;
 import utp.edu.com.crediticio.model.evaluacion.Evaluacion;
 import utp.edu.com.crediticio.model.politica.Politica;
 import utp.edu.com.crediticio.model.solicitud.Solicitud;
+import utp.edu.com.crediticio.model.solicitud.SolicitudApiRespuesta;
 import utp.edu.com.crediticio.model.usuario.Usuario;
+import utp.edu.com.crediticio.exception.api.RecursoNoEncontradoException;
 import utp.edu.com.crediticio.service.cliente.ClienteService;
 import utp.edu.com.crediticio.service.evaluacion.EvaluacionService;
 import utp.edu.com.crediticio.service.politica.PoliticaService;
@@ -44,7 +46,18 @@ public class ApiRestController {
     @DeleteMapping("/clientes/{id}") @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminarCliente(@PathVariable Long id) { requerido(clientes.buscar(id), "Cliente"); clientes.eliminar(id); }
 
-    @GetMapping("/solicitudes") public List<Solicitud> listarSolicitudes() { return solicitudes.listarConCliente(); }
+    @GetMapping("/solicitudes")
+    public List<SolicitudApiRespuesta> listarSolicitudes(
+            @RequestParam(required = false) String texto,
+            @RequestParam(required = false) String estado) {
+        return solicitudes.listarConCliente().stream()
+                .filter(s -> coincide(s.getCodigo(), texto)
+                        || coincide(s.getCliente() == null ? null : s.getCliente().getNombre(), texto)
+                        || coincide(s.getCliente() == null ? null : s.getCliente().getDni(), texto))
+                .filter(s -> estado == null || estado.isBlank() || estado.equalsIgnoreCase(s.getEstado()))
+                .map(SolicitudApiRespuesta::desde)
+                .toList();
+    }
     @GetMapping("/solicitudes/{id}") public Solicitud verSolicitud(@PathVariable Long id) { return requerido(solicitudes.buscar(id), "Solicitud"); }
     @PostMapping("/solicitudes") @ResponseStatus(HttpStatus.CREATED)
     public Solicitud crearSolicitud(@Valid @RequestBody Solicitud solicitud) { solicitud.setIdSolicitud(null); return solicitudes.guardar(solicitud); }
@@ -89,5 +102,9 @@ public class ApiRestController {
         if (valor == null) throw new RecursoNoEncontradoException(entidad + " no encontrado.");
         return valor;
     }
+    private static boolean coincide(String campo, String filtro) {
+        return filtro == null || filtro.isBlank() || campo != null && campo.toLowerCase().contains(filtro.trim().toLowerCase());
+    }
     public record DecisionApi(String resultado, String comentario) { }
 }
+

@@ -34,11 +34,10 @@
                         <div>
                             <p class="section-eyebrow mb-1">Administración</p>
                             <h2>Políticas crediticias</h2>
-                            <p class="text-muted mb-0">Versiones y reglas registradas en PostgreSQL.</p>
+                            <p class="text-muted mb-0">Reglas disponibles para cada producto crediticio.</p>
                         </div>
                         <a class="btn btn-primary" th:href="@{/politicas/nueva}">+ Nueva política</a>
                     </div>
-                    <div class="alert alert-info" role="status">Políticas almacenadas en PostgreSQL mediante Spring Data JPA.</div>
                     <div class="alert alert-success" role="status" th:if="${mensaje}" th:text="${mensaje}">
                     </div>
                     <div class="card shadow-sm mb-4">
@@ -86,7 +85,7 @@
                                 <button aria-controls="reglasPersonal" aria-expanded="true" class="accordion-button" data-bs-target="#reglasPersonal" data-bs-toggle="collapse" type="button">Reglas principales - Crédito personal v3.2</button>
                             </h2>
                             <div class="accordion-collapse collapse show" data-bs-parent="#reglasPolitica" id="reglasPersonal">
-                                <div class="accordion-body">La política aporta límites de puntaje y endeudamiento. Si una solicitud no cumple claramente los límites de aprobación o rechazo, queda pendiente para análisis del personal.</div>
+                                <div class="accordion-body">La política aporta límites de puntaje y endeudamiento. Si una solicitud no cumple claramente los límites de aprobación o rechazo, pasa a revisión manual del personal.</div>
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -94,7 +93,7 @@
                                 <button aria-controls="versionado" aria-expanded="false" class="accordion-button collapsed" data-bs-target="#versionado" data-bs-toggle="collapse" type="button">Historial de versiones</button>
                             </h2>
                             <div class="accordion-collapse collapse" data-bs-parent="#reglasPolitica" id="versionado">
-                                <div class="accordion-body">El listado y el formulario utilizan PoliticaRepository. Los registros guardados permanecen en PostgreSQL al reiniciar la aplicación.</div>
+                                <div class="accordion-body">Al crear una solicitud, se usa la política activa más reciente que corresponda al producto. Los cambios aplican a las solicitudes nuevas; las evaluaciones existentes conservan su resultado.</div>
                             </div>
                         </div>
                     </div>

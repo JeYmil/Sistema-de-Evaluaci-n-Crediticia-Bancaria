@@ -17,6 +17,9 @@ public class DemoAccountInitializer implements ApplicationRunner {
         usuarios.findFirstByCorreoIgnoreCase("andrea.salazar@banco.com").ifPresent(u -> {
             if (u.getPasswordHash()==null || u.getPasswordHash().isBlank()) { u.setPasswordHash(hasher.codificar("Banco123!")); usuarios.save(u); }
         });
+        usuarios.findFirstByCorreoIgnoreCase("roberto.mendoza@banco.com").ifPresent(u -> {
+            if (u.getPasswordHash()==null || u.getPasswordHash().isBlank()) { u.setPasswordHash(hasher.codificar("Banco123!")); usuarios.save(u); }
+        });
         clientes.findFirstByDni("70000001").ifPresent(c -> {
             if (c.getPasswordHash()==null || c.getPasswordHash().isBlank()) { c.setPasswordHash(hasher.codificar("Cliente123!")); clientes.save(c); }
         });

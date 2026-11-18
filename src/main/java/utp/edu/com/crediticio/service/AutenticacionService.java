@@ -40,10 +40,19 @@ public class AutenticacionService {
         if (cliente == null) {
             cliente=new Cliente(); cliente.setCodigo("CL-%03d".formatted(clienteRepository.count()+1));
             cliente.setNombre(form.getNombre().trim()); cliente.setDni(dni); cliente.setCorreo(form.getCorreo().trim().toLowerCase()); cliente.setEstado("Activo");
+            cliente.setFechaNacimiento(form.getFechaNacimiento()); cliente.setTelefono(form.getTelefono().trim()); cliente.setDireccion(form.getDireccion().trim());
+            cliente.setEmpresa(form.getEmpresa().trim()); cliente.setCargo(form.getCargo().trim());
+            cliente.setAntiguedadMeses(form.getAntiguedadMeses()); cliente.setIngresosMensuales(form.getIngresosMensuales());
+            cliente.setGastosMensuales(form.getGastosMensuales()); cliente.setDeudasMensuales(form.getDeudasMensuales());
         } else if (cliente.getPasswordHash()!=null && !cliente.getPasswordHash().isBlank()) {
             throw new IllegalArgumentException("Ese cliente ya tiene una cuenta. Inicia sesión.");
         }
         if (cliente.getCorreo()==null || cliente.getCorreo().isBlank()) cliente.setCorreo(form.getCorreo().trim().toLowerCase());
+        if (form.getTelefono()!=null && !form.getTelefono().isBlank()) cliente.setTelefono(form.getTelefono().trim());
+        if (form.getDireccion()!=null && !form.getDireccion().isBlank()) cliente.setDireccion(form.getDireccion().trim());
+        cliente.setFechaNacimiento(form.getFechaNacimiento()); cliente.setEmpresa(form.getEmpresa().trim()); cliente.setCargo(form.getCargo().trim());
+        cliente.setAntiguedadMeses(form.getAntiguedadMeses()); cliente.setIngresosMensuales(form.getIngresosMensuales());
+        cliente.setGastosMensuales(form.getGastosMensuales()); cliente.setDeudasMensuales(form.getDeudasMensuales());
         cliente.setPasswordHash(passwordHasher.codificar(form.getClave()));
         clienteRepository.save(cliente);
     }

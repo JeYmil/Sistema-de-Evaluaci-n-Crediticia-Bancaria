@@ -12,6 +12,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -31,23 +32,33 @@ public class Cliente {
     private String dni;
     @JsonIgnore
     private String passwordHash;
+    @NotNull(message = "Ingresa la fecha de nacimiento.")
     private LocalDate fechaNacimiento;
-    @Pattern(regexp = "^$|[0-9]{9}", message = "El teléfono debe tener 9 dígitos.")
+    @NotBlank(message = "El teléfono es obligatorio.")
+    @Pattern(regexp = "[0-9]{9}", message = "El teléfono debe tener 9 dígitos.")
     private String telefono;
+    @NotBlank(message = "El correo electrónico es obligatorio.")
     @Email(message = "Ingresa un correo electrónico válido.")
     @Size(max = 150, message = "El correo no puede superar 150 caracteres.")
     private String correo;
+    @NotBlank(message = "La dirección es obligatoria.")
     @Size(max = 180, message = "La dirección no puede superar 180 caracteres.")
     private String direccion;
     private String estado;
+    @NotBlank(message = "Ingresa la empresa o actividad.")
     private String empresa;
+    @NotBlank(message = "Ingresa el cargo u ocupación.")
     private String cargo;
+    @NotNull(message = "Ingresa la antigüedad laboral en meses.")
     @Min(value = 0, message = "La antigüedad no puede ser negativa.")
     private Integer antiguedadMeses;
+    @NotNull(message = "Ingresa los ingresos mensuales.")
     @DecimalMin(value = "0.0", message = "Los ingresos no pueden ser negativos.")
     private BigDecimal ingresosMensuales;
+    @NotNull(message = "Ingresa los gastos mensuales.")
     @DecimalMin(value = "0.0", message = "Los gastos no pueden ser negativos.")
     private BigDecimal gastosMensuales;
+    @NotNull(message = "Ingresa las deudas mensuales; usa 0 si no tienes.")
     @DecimalMin(value = "0.0", message = "Las deudas no pueden ser negativas.")
     private BigDecimal deudasMensuales;
 

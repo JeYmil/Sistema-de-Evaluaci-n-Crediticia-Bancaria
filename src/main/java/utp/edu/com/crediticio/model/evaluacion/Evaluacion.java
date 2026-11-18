@@ -35,14 +35,12 @@ public class Evaluacion {
     private Integer puntaje;
     @Pattern(regexp = "^(Por evaluar|Bajo|Medio|Alto)?$", message = "Selecciona un nivel de riesgo válido.")
     private String nivelRiesgo;
-    @Pattern(regexp = "^(Pendiente|Aprobado|Rechazado|Revisión manual)?$", message = "Selecciona un resultado válido.")
+    @Pattern(regexp = "^(Aprobado|Rechazado|Revisión manual)?$", message = "El resultado debe ser Aprobado, Rechazado o Revisión manual.")
     private String resultado;
     @Size(max = 100, message = "La política no puede superar 100 caracteres.")
     private String politica;
-    @DecimalMin(value = "0.0", message = "El ingreso disponible no puede ser negativo.")
     private BigDecimal ingresoDisponible;
     @DecimalMin(value = "0.0", message = "El DTI no puede ser negativo.")
-    @Max(value = 100, message = "El DTI no puede superar 100 %.")
     private BigDecimal dti;
     @DecimalMin(value = "0.0", message = "La capacidad de cuota no puede ser negativa.")
     private BigDecimal capacidadNuevaCuota;

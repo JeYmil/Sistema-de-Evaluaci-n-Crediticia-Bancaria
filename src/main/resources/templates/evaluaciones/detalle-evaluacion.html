@@ -72,7 +72,7 @@
                                     <h5>Resultado de evaluación</h5>
                                     <div class="row g-3">
                                         <div class="col-6"><small class="text-muted">Puntaje</small>
-                                            <div class="fs-4" th:text="${evaluacion.puntaje != null ? evaluacion.puntaje + ' / 850' : 'Pendiente'}">
+                                            <div class="fs-4" th:text="${evaluacion.puntaje != null ? evaluacion.puntaje + ' / 850' : 'Sin puntaje'}">
                                             </div>
                                         </div>
                                         <div class="col-6"><small class="text-muted">Riesgo</small>
@@ -80,7 +80,7 @@
                                             </div>
                                         </div>
                                         <div class="col-6"><small class="text-muted">Resultado</small>
-                                            <div class="fs-5" th:text="${evaluacion.resultado ?: 'Pendiente'}">
+                                            <div class="fs-5" th:text="${evaluacion.resultado ?: 'Revisión manual'}">
                                             </div>
                                         </div>
                                         <div class="col-6"><small class="text-muted">DTI</small>
@@ -109,7 +109,7 @@
                             <h5>Decisión de la solicitud</h5>
                             <p class="text-muted">La decisión actualiza la evaluación y la solicitud relacionada.</p>
                             <div th:if="${evaluacion.solicitud != null}">
-                                <div th:if="${evaluacion.resultado == 'Revisión manual' or evaluacion.resultado == 'Pendiente' or evaluacion.resultado == 'Por evaluar'}">
+                                <div th:if="${evaluacion.resultado == 'Revisión manual'}">
                                 <form method="post" th:action="@{/evaluaciones/{id}/decision(id=${evaluacion.idEvaluacion})}">
                                     <div class="mb-3"><label class="form-label" for="comentarioDecision">Comentario de la decisión</label>
                                         <textarea class="form-control" id="comentarioDecision" name="comentario" rows="2" th:text="${evaluacion.comentario}">
@@ -121,7 +121,7 @@
                                     </div>
                                 </form>
                                 </div>
-                                <div class="alert alert-info mb-0" th:unless="${evaluacion.resultado == 'Revisión manual' or evaluacion.resultado == 'Pendiente' or evaluacion.resultado == 'Por evaluar'}">
+                                <div class="alert alert-info mb-0" th:unless="${evaluacion.resultado == 'Revisión manual'}">
                                     La solicitud ya tiene una decisión automática o fue resuelta; aquí solo se muestra el resultado.
                                 </div>
                             </div>

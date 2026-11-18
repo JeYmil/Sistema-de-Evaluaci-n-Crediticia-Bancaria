@@ -20,7 +20,7 @@
             <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
             <section class="mb-5">
                 <div class="row align-items-center g-4">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <p class="section-eyebrow mb-1">Portal del cliente</p>
                         <h1 class="display-6 fw-bold">Mis solicitudes de crédito</h1>
                         <p class="lead text-muted mb-0">Registra una nueva solicitud y consulta únicamente las solicitudes asociadas a tu perfil.</p>
@@ -30,18 +30,18 @@
                             <div class="card-body p-4">
                                 <div class="small text-muted">Solicitudes registradas</div>
                                 <div class="display-6 fw-bold" th:text="${#lists.size(solicitudes)}">0</div>
-                                <div class="small text-muted" th:text="${#lists.isEmpty(solicitudes) ? 'Aún no tienes solicitudes.' : 'Tus solicitudes se consultan desde PostgreSQL.'}">Aún no tienes solicitudes.</div>
+                                <div class="small text-muted" th:text="${#lists.isEmpty(solicitudes) ? 'Aún no tienes solicitudes.' : 'Consulta aquí el estado de tus solicitudes.'}">Aún no tienes solicitudes.</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
             <section class="row g-4 mb-5">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="card shadow-sm h-100">
                         <div class="card-body p-4">
                             <h2 class="h4">Ingresar una solicitud de crédito</h2>
-                            <p class="text-muted">La solicitud se guardará en la base de datos y será visible inmediatamente para un trabajador.</p>
+                            <p class="text-muted">Completa los datos del crédito y adjunta los documentos que ayuden a sustentarla.</p>
                             <!-- Formulario configurado para enviar por POST al backend -->
                             <form th:object="${solicitudPortal}" th:action="@{/portal-cliente/solicitar}" method="post" enctype="multipart/form-data" class="needs-validation">
                                 <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">
@@ -90,25 +90,11 @@
                                     <div class="col-md-4"><label class="form-label" for="ingresos">Ingresos mensuales</label><input class="form-control" id="ingresos" type="number" min="0" step="0.01" th:field="*{ingresosMensuales}"/></div>
                                     <div class="col-md-4"><label class="form-label" for="gastos">Gastos mensuales</label><input class="form-control" id="gastos" type="number" min="0" step="0.01" th:field="*{gastosMensuales}"/></div>
                                     <div class="col-md-4"><label class="form-label" for="deudas">Deudas mensuales</label><input class="form-control" id="deudas" type="number" min="0" step="0.01" th:field="*{deudasMensuales}"/></div>
-                                    <div class="col-12"><label class="form-label" for="archivos">Documentos de sustento (PDF, JPG o PNG; máximo 5 MB cada uno)</label><input class="form-control" id="archivos" name="archivos" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple/></div>
+                                    <div class="col-12"><label class="form-label" for="archivos">Documentos de sustento</label><input class="form-control" id="archivos" name="archivos" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple data-file-queue/><div class="form-text">PDF, JPG o PNG; máximo 5 MB por archivo y 20 MB en total. Puedes agregarlos en varias selecciones.</div><div class="text-danger small" data-file-error role="alert"></div><ul class="list-group list-group-flush mt-2" data-file-list aria-live="polite"></ul></div>
                                     <div class="col-12">
                                         <button class="btn btn-primary" type="submit">Enviar solicitud</button></div>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body p-4">
-                            <h2 class="h4">Flujo del Sistema</h2>
-                            <p class="text-muted">Al enviar la solicitud se procesa directamente en el servidor y se almacena en PostgreSQL.</p>
-                            <ol class="mb-0">
-                                <li>Llenas los datos del formulario.</li>
-                                <li>El controlador recibe la petición POST.</li>
-                                <li>El servicio coordina el guardado con el repositorio JPA.</li>
-                                <li>Se actualiza la vista con el resultado.</li>
-                            </ol>
                         </div>
                     </div>
                 </div>
@@ -133,7 +119,6 @@
                                         <th>Plazo</th>
                                         <th>Fecha</th>
                                         <th>Estado</th>
-                                        <th>Oferta</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -150,7 +135,6 @@
                                         </td>
                                         <td th:text="${solicitud.estado}">
                                         </td>
-                                        <td>—</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -163,6 +147,7 @@
                 </div>
             </section>
         </main>
+        <script th:src="@{/js/documentos-solicitud.js}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
         </script>
     </body>

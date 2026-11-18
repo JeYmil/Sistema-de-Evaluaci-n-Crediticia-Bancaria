@@ -44,20 +44,21 @@
                                 </div>
                             </div>
                             <div class="col-md-6"><label class="form-label" for="fechaNacimiento">Fecha de nacimiento</label>
-                                <input id="fechaNacimiento" class="form-control" type="date" th:field="*{fechaNacimiento}"/>
+                                <input id="fechaNacimiento" class="form-control" type="date" th:field="*{fechaNacimiento}" required/>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></div>
                             </div>
                             <div class="col-md-6"><label class="form-label" for="telefono">Teléfono</label>
-                                <input id="telefono" class="form-control" th:field="*{telefono}" inputmode="numeric" maxlength="9" pattern="[0-9]{9}"/>
+                                <input id="telefono" class="form-control" th:field="*{telefono}" inputmode="numeric" maxlength="9" pattern="[0-9]{9}" required/>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">
                                 </div>
                             </div>
                             <div class="col-md-6"><label class="form-label" for="correo">Correo electrónico</label>
-                                <input id="correo" class="form-control" type="email" th:field="*{correo}" maxlength="150"/>
+                                <input id="correo" class="form-control" type="email" th:field="*{correo}" maxlength="150" required/>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">
                                 </div>
                             </div>
                             <div class="col-md-6"><label class="form-label" for="direccion">Dirección</label>
-                                <input id="direccion" class="form-control" th:field="*{direccion}" maxlength="180"/>
+                                <input id="direccion" class="form-control" th:field="*{direccion}" maxlength="180" required/>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}">
                                 </div>
                             </div>
@@ -68,28 +69,32 @@
                                 </select>
                             </div>
                             <div class="col-md-6"><label class="form-label" for="empresa">Empresa</label>
-                                <input id="empresa" class="form-control" th:field="*{empresa}" maxlength="120"/>
+                                <input id="empresa" class="form-control" th:field="*{empresa}" maxlength="120" required/>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('empresa')}" th:errors="*{empresa}"></div>
                             </div>
                             <div class="col-md-6"><label class="form-label" for="cargo">Cargo</label>
-                                <input id="cargo" class="form-control" th:field="*{cargo}" maxlength="100"/>
+                                <input id="cargo" class="form-control" th:field="*{cargo}" maxlength="100" required/>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('cargo')}" th:errors="*{cargo}"></div>
                             </div>
                             <div class="col-md-6"><label class="form-label" for="antiguedadMeses">Antigüedad (meses)</label>
-                                <input id="antiguedadMeses" class="form-control" type="number" min="0" th:field="*{antiguedadMeses}"/>
+                                <input id="antiguedadMeses" class="form-control" type="number" min="0" th:field="*{antiguedadMeses}" required/>
+                                <div class="form-text">Dato del perfil laboral; no cambia por sí solo la decisión automática.</div>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('antiguedadMeses')}" th:errors="*{antiguedadMeses}">
                                 </div>
                             </div>
                             <div class="col-md-4"><label class="form-label" for="ingresosMensuales">Ingresos mensuales (S/)</label>
-                                <input id="ingresosMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{ingresosMensuales}"/>
+                                <input id="ingresosMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{ingresosMensuales}" required/>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('ingresosMensuales')}" th:errors="*{ingresosMensuales}">
                                 </div>
                             </div>
                             <div class="col-md-4"><label class="form-label" for="gastosMensuales">Gastos mensuales (S/)</label>
-                                <input id="gastosMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{gastosMensuales}"/>
+                                <input id="gastosMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{gastosMensuales}" required/>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('gastosMensuales')}" th:errors="*{gastosMensuales}">
                                 </div>
                             </div>
                             <div class="col-md-4"><label class="form-label" for="deudasMensuales">Deudas mensuales (S/)</label>
-                                <input id="deudasMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{deudasMensuales}"/>
+                                <input id="deudasMensuales" class="form-control" type="number" min="0" step="0.01" th:field="*{deudasMensuales}" required/>
+                                <div class="form-text">Ingresa 0 si no tienes deudas.</div>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('deudasMensuales')}" th:errors="*{deudasMensuales}">
                                 </div>
                             </div>

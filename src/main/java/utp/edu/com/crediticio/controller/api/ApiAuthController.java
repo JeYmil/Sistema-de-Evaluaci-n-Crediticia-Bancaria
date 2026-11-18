@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import utp.edu.com.crediticio.model.cliente.RegistroClienteForm;
 import utp.edu.com.crediticio.service.AutenticacionService;
+import utp.edu.com.crediticio.exception.api.AccesoNoAutorizadoException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,3 +28,4 @@ public class ApiAuthController {
     @PostMapping("/logout") public Map<String,String> logout(HttpSession session) { session.invalidate(); return Map.of("mensaje","Sesión cerrada."); }
     public record LoginApi(String usuario,String password) { }
 }
+

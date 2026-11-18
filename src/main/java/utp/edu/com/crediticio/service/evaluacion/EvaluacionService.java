@@ -38,7 +38,7 @@ public class EvaluacionService {
         if (evaluacion.getCodigo() == null || evaluacion.getCodigo().isBlank()) {
             evaluacion.setCodigo("EV-%03d".formatted(evaluacionRepository.count() + 1));
         }
-        if (evaluacion.getResultado() == null || evaluacion.getResultado().isBlank()) evaluacion.setResultado("Pendiente");
+        if (evaluacion.getResultado() == null || evaluacion.getResultado().isBlank()) evaluacion.setResultado("Revisión manual");
         if (evaluacion.getNivelRiesgo() == null || evaluacion.getNivelRiesgo().isBlank()) evaluacion.setNivelRiesgo("Por evaluar");
         return evaluacionRepository.save(evaluacion);
     }
@@ -51,7 +51,7 @@ public class EvaluacionService {
             throw new IllegalArgumentException("La revisión manual solo permite aprobar o rechazar.");
         }
         String estadoActual = evaluacion.getResultado();
-        if (estadoActual == null || !List.of("Revisión manual", "Pendiente", "Por evaluar").contains(estadoActual)) {
+        if (estadoActual == null || !List.of("Revisión manual").contains(estadoActual)) {
             throw new IllegalArgumentException("Esta evaluación ya tiene una decisión registrada.");
         }
         evaluacion.setResultado(resultado);

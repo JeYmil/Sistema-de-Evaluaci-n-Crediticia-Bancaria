@@ -26,7 +26,7 @@
                 </aside>
                 <main class="col-md-9 col-lg-10 p-4">
                     <h2 th:text="${solicitud.idSolicitud == null ? 'Nueva solicitud' : 'Editar solicitud'}">Nueva solicitud</h2>
-                    <p class="text-muted">Completa los datos del crédito para guardarlos en PostgreSQL.</p>
+                    <p class="text-muted">Completa el perfil y los datos del crédito. El resultado lo asigna la evaluación del sistema.</p>
                     <form class="card card-body shadow-sm" th:object="${solicitud}" th:action="@{/solicitudes/guardar}" method="post" enctype="multipart/form-data">
                         <input type="hidden" th:field="*{idSolicitud}"/>
                         <input type="hidden" th:field="*{codigo}"/>
@@ -85,23 +85,12 @@
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('deudasMensuales')}" th:errors="*{deudasMensuales}">
                                 </div>
                             </div>
-                            <div class="col-md-6"><label class="form-label" for="estado">Estado</label>
-                                <select id="estado" class="form-select" th:field="*{estado}">
-                                    <option value="Pendiente">Pendiente</option>
-                                    <option value="En evaluación">En evaluación</option>
-                                    <option value="Revisión manual">Revisión manual</option>
-                                    <option value="Aprobada">Aprobada</option>
-                                    <option value="Rechazada">Rechazada</option>
-                                </select>
-                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}">
-                                </div>
-                            </div>
                             <div class="col-md-6"><label class="form-label" for="motivo">Motivo</label>
                                 <input id="motivo" class="form-control" th:field="*{motivo}" maxlength="250"/>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('motivo')}" th:errors="*{motivo}">
                                 </div>
                             </div>
-                            <div class="col-12"><label class="form-label" for="archivos">Documentos de sustento (PDF, JPG o PNG; máximo 5 MB cada uno)</label><input class="form-control" id="archivos" name="archivos" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple/></div>
+                            <div class="col-12"><label class="form-label" for="archivos">Documentos de sustento</label><input class="form-control" id="archivos" name="archivos" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple data-file-queue/><div class="form-text">PDF, JPG o PNG; máximo 5 MB por archivo y 20 MB en total. Puedes agregarlos en varias selecciones.</div><div class="text-danger small" data-file-error role="alert"></div><ul class="list-group list-group-flush mt-2" data-file-list aria-live="polite"></ul></div>
                             <div class="col-12"><label class="form-label" for="observaciones">Observaciones</label>
                                 <textarea id="observaciones" class="form-control" rows="3" th:field="*{observaciones}" maxlength="1000">
                                 </textarea>
@@ -109,6 +98,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="alert alert-light border mt-4 mb-0">El sistema asigna el resultado automáticamente según la política activa del tipo de crédito. Los casos intermedios pasan a revisión manual.</div>
                         <div class="mt-4">
                             <button class="btn btn-primary" type="submit" th:disabled="${#lists.isEmpty(clientes)}">Guardar solicitud</button>
                             <a class="btn btn-secondary" th:href="@{/solicitudes}">Cancelar</a></div>
@@ -116,5 +106,6 @@
                 </main>
             </div>
         </div>
+        <script th:src="@{/js/documentos-solicitud.js}" defer></script>
     </body>
 </html>

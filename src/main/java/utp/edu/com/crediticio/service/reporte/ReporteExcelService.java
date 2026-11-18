@@ -29,11 +29,11 @@ public class ReporteExcelService {
             String[] columnasResumen={"Indicador","Resultado"};
             Row r=resumenHoja.createRow(0); escribir(r,columnasResumen,encabezado);
             String[][] valores={{"Solicitudes",String.valueOf(resumen.getTotal())},{"Aprobadas",String.valueOf(resumen.getAprobadas())},
-                {"Rechazadas",String.valueOf(resumen.getRechazadas())},{"Pendientes / revisión",String.valueOf(resumen.getPendientes())},
+                {"Rechazadas",String.valueOf(resumen.getRechazadas())},{"En revisión manual",String.valueOf(resumen.getPendientes())},
                 {"Monto solicitado",String.valueOf(resumen.getMontoSolicitado())},{"Tasa de aprobación (%)",String.valueOf(resumen.getTasaAprobacion())},
                 {"Tasa de rechazo (%)",String.valueOf(resumen.getTasaRechazo())}};
             for(int i=0;i<valores.length;i++) escribir(resumenHoja.createRow(i+1),valores[i],null);
-            int fila=valores.length+3; escribir(resumenHoja.createRow(fila++),new String[]{"Mes","Total","Aprobadas","Rechazadas","Pendientes"},encabezado);
+            int fila=valores.length+3; escribir(resumenHoja.createRow(fila++),new String[]{"Mes","Total","Aprobadas","Rechazadas","Revisión manual"},encabezado);
             for(var mes:resumen.getResumenMensual()) escribir(resumenHoja.createRow(fila++),new String[]{mes.getMes(),""+mes.getTotal(),""+mes.getAprobadas(),""+mes.getRechazadas(),""+mes.getPendientes()},null);
             resumenHoja.autoSizeColumn(0); resumenHoja.autoSizeColumn(1);
 

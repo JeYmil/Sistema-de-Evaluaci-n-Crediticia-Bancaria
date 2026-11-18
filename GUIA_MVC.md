@@ -10,7 +10,7 @@
 
 ## El API
 
-El API REST tiene controladores separados bajo `controller/api`. Una ruta como `GET /api/v1/solicitudes` devuelve JSON; las rutas MVC como `/solicitudes` devuelven HTML. Los dos tipos de controlador usan los mismos servicios y repositorios.
+Los controladores web están bajo `controller/web` y devuelven vistas Thymeleaf. Las rutas REST están bajo `controller/api` en clases `@RestController`; por ejemplo, `GET /api/v1/solicitudes` devuelve JSON. La pantalla `/solicitudes` carga su marco HTML con Thymeleaf y luego `solicitudes-api.js` llama al endpoint JSON para llenar la tabla y aplicar filtros. Ambos recorridos usan los mismos servicios y repositorios. `ApiErrorHandler`, ubicado en `exception/api`, convierte errores en JSON; no es un endpoint ni se cuenta como API.
 
 ## Una solicitud nueva
 

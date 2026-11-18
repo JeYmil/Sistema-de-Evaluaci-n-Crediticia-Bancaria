@@ -30,7 +30,7 @@
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                         <div>
                             <h2 class="mb-1">Solicitudes de crédito</h2>
-                            <p class="text-muted mb-0">Consulta y administra el estado de cada solicitud.</p>
+                            <p class="text-muted mb-0">Consulta y filtra las solicitudes de crédito.</p>
                         </div>
                         <a class="btn btn-primary" th:href="@{/solicitudes/registrar}">+ Nueva solicitud</a></div>
                     <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                            <form class="row g-3" method="get" th:action="@{/solicitudes}">
+                                <form id="filtro-solicitudes" class="row g-3" method="get" th:action="@{/solicitudes}" data-api-url="/api/v1/solicitudes">
                                 <div class="col-md-6"><label class="form-label" for="buscar">Buscar por cliente, DNI o código</label>
                                     <input id="buscar" class="form-control" name="texto" th:value="${texto}" placeholder="Ej. Claudia Ramos o SOL-001"/>
                                 </div>
@@ -71,26 +71,8 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr th:each="solicitud : ${solicitudes}">
-                                        <td class="fw-semibold" th:text="${solicitud.codigo ?: '—'}">SOL-001</td>
-                                        <td><span th:text="${solicitud.cliente != null ? solicitud.cliente.nombre : 'Cliente sin vincular'}">Cliente</span><br/><small class="text-muted" th:text="${solicitud.cliente != null ? solicitud.cliente.dni : 'Revisar registro'}"></small></td>
-                                        <td th:text="${solicitud.tipoCredito ?: '—'}">
-                                        </td>
-                                        <td th:text="${solicitud.monto != null ? 'S/ ' + #numbers.formatDecimal(solicitud.monto, 1, 'COMMA', 2, 'POINT') : '—'}">
-                                        </td>
-                                        <td th:text="${solicitud.plazoMeses != null ? solicitud.plazoMeses + ' meses' : '—'}">
-                                        </td>
-                                        <td th:text="${solicitud.fecha ?: '—'}">
-                                        </td>
-                                        <td><span class="badge text-bg-secondary" th:text="${solicitud.estado ?: 'Pendiente'}">Pendiente</span></td>
-                                        <td>
-                                            <a class="btn btn-sm btn-outline-primary" th:href="@{/solicitudes/detalle(id=${solicitud.idSolicitud})}">Ver</a>
-                                        </td>
-                                    </tr>
-                                    <tr th:if="${#lists.isEmpty(solicitudes)}">
-                                        <td colspan="8" class="text-center text-muted py-5">No hay solicitudes que coincidan. Puedes registrar una nueva.</td>
-                                    </tr>
+                                <tbody id="filas-solicitudes">
+                                    <tr id="estado-tabla-solicitudes"><td colspan="8" class="text-center text-muted py-5">Cargando solicitudes...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -98,5 +80,6 @@
                 </main>
             </div>
         </div>
+        <script th:src="@{/js/solicitudes-api.js(v=20261117)}" defer></script>
     </body>
 </html>
